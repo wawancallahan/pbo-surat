@@ -291,7 +291,7 @@ public class SuratKeluarCreate extends javax.swing.JFrame {
         }
         
          try {
-            String query = "INSERT INTO surat_keluar VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO surat_keluar VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pst = getConnection.prepareStatement(query);
             pst.setString(1, noSurat);
             pst.setString(2, perihal);
@@ -302,6 +302,7 @@ public class SuratKeluarCreate extends javax.swing.JFrame {
             pst.setString(7, pengirim);
             pst.setString(8, tertuju);
             pst.setString(9, alamat);
+            pst.setString(10, "");
             
             int result = pst.executeUpdate();
             
