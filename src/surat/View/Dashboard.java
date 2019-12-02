@@ -24,11 +24,16 @@ public class Dashboard extends javax.swing.JFrame {
     public Dashboard() {
         initComponents();
         
+        System.out.print(Session.role);
+        
         switch (Session.role) {
             case "admin":
+                menuItemSuratMasuk.setVisible(false);
+                menuItemSuratKeluar.setVisible(false);
                 break;
-            case "Petugas":
+            case "petugas":
                 menuMaster.setVisible(false);
+                menuItemKlasifikasi.setVisible(false);
                 break;
         }
         
