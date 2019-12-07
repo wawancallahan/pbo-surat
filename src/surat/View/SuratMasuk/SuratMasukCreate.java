@@ -309,23 +309,23 @@ public class SuratMasukCreate extends javax.swing.JFrame {
             String path = "";
             String savePath = "";
             
-            try {
-                 path = new File(".").getCanonicalPath();
-                 savePath = path + "/files/" + fileSelected.getName();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
+//            try {
+//                 path = new File(".").getCanonicalPath();
+//                 savePath = path + "/files/" + fileSelected.getName();
+//            } catch (IOException e) {
+//                System.out.println(e.getMessage());
+//            }
             pst.setString(9, "");
             
             int result = pst.executeUpdate();
             
             if (result == 1) {
                 
-                try {
-                    FileUtils.copyFileToDirectory(fileSelected, new File(path+"/files"));
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
+//                try {
+//                    FileUtils.copyFileToDirectory(fileSelected, new File(path+"/files"));
+//                } catch (IOException e) {
+//                    System.out.println(e.getMessage());
+//                }
                   
                 JOptionPane.showMessageDialog(rootPane, "Data Berhasil Disimpan");
                 
