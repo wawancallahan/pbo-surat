@@ -10,6 +10,7 @@ package surat.Config;
  * @author riefist
  */
 public class Session {
+    public static Integer id;
     public static String username;
     public static String nama;
     public static String role;

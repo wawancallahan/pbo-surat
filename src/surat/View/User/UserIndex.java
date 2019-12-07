@@ -16,6 +16,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import surat.Config.Session;
 
 /**
  *
@@ -133,6 +134,9 @@ public class UserIndex extends javax.swing.JFrame implements Crud {
         btnHapus = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnTambah = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        btnCari = new javax.swing.JButton();
+        txtCari = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -166,6 +170,15 @@ public class UserIndex extends javax.swing.JFrame implements Crud {
             }
         });
 
+        jLabel2.setText("Cari");
+
+        btnCari.setText("Cari");
+        btnCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -173,16 +186,22 @@ public class UserIndex extends javax.swing.JFrame implements Crud {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnTambah)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnEdit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnHapus)))
+                        .addComponent(btnHapus))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtCari)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCari)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -190,14 +209,20 @@ public class UserIndex extends javax.swing.JFrame implements Crud {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnHapus)
                     .addComponent(btnEdit)
                     .addComponent(btnTambah))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCari))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -208,7 +233,7 @@ public class UserIndex extends javax.swing.JFrame implements Crud {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -224,10 +249,19 @@ public class UserIndex extends javax.swing.JFrame implements Crud {
         int rowIndex = table.getSelectedRow();
         
         if (rowIndex > -1) {
-            update(Integer.valueOf(table.getValueAt(rowIndex, 1).toString()));
+            int id = Integer.valueOf(table.getValueAt(rowIndex, 1).toString());
+        
+            if (id == 1 && id != Session.id) {
+                JOptionPane.showMessageDialog(rootPane, "Tidak Dapat Mengedit User Admin Utama");
+
+                return;
+            }
+            
+            update(id);
             table.clearSelection();
             return;
         }
+        
         
         JOptionPane.showMessageDialog(rootPane, "Data Belum Terpilih");
     }//GEN-LAST:event_btnEditActionPerformed
@@ -238,7 +272,22 @@ public class UserIndex extends javax.swing.JFrame implements Crud {
         int rowIndex = table.getSelectedRow();
         
         if (rowIndex > -1) {
-            delete(Integer.valueOf(table.getValueAt(rowIndex, 1).toString()));
+            
+            int id = Integer.valueOf(table.getValueAt(rowIndex, 1).toString());
+               
+            if (id == Session.id) {
+                JOptionPane.showMessageDialog(rootPane, "Tidak Dapat Menghapus User Sendiri");
+                
+                return;
+            }
+            
+             if (id == 1) {
+                JOptionPane.showMessageDialog(rootPane, "Tidak Dapat Menghapus User Admin Utama");
+                
+                return;
+            }
+            
+            delete(id);
             table.clearSelection();
             return;
         }
@@ -250,6 +299,53 @@ public class UserIndex extends javax.swing.JFrame implements Crud {
         // TODO add your handling code here:
         UserIndex.userIndex = null;
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
+        // TODO add your handling code here:
+         DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        model.setRowCount(0);
+        
+        model.addColumn("No");
+        model.addColumn("ID");
+        model.addColumn("Username");
+        model.addColumn("Nama");
+        model.addColumn("Role");
+        
+        try {
+            String cari = txtCari.getText();
+            
+            String query = "SELECT * FROM users WHERE username LIKE '%" + cari + "%' OR nama LIKE '%" + cari + "%'";
+            PreparedStatement pst = getConnection.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            int increment = 1;
+            
+            while (rs.next()) {
+                model.addRow(new Object[] {
+                    increment,
+                    rs.getString("id"),
+                    rs.getString("username"),
+                    rs.getString("nama"),
+                    rs.getString("role")
+                });
+                
+                increment += 1;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        table.setModel(model);
+        table.getColumnModel().getColumn(1).setMinWidth(0);
+        table.getColumnModel().getColumn(1).setMaxWidth(0);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }//GEN-LAST:event_btnCariActionPerformed
 
     /**
      * @param args the command line arguments
@@ -287,12 +383,15 @@ public class UserIndex extends javax.swing.JFrame implements Crud {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCari;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnTambah;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
+    private javax.swing.JTextField txtCari;
     // End of variables declaration//GEN-END:variables
 }

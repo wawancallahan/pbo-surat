@@ -135,7 +135,7 @@ public class Login extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
             
             if (rs.first()) {
-                
+                Session.id = rs.getInt("id");
                 Session.nama = rs.getString("nama");
                 Session.role = rs.getString("role");
                 Session.username = rs.getString("username");
